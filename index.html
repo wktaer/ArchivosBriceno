@@ -222,20 +222,45 @@
 </head>
 <body>
   <div id="particles-js"></div>
-  <header class="header">
-    <h1>Jota File Manager</h1>
-    <p>Copyright - jota 2025</p>
-  </header>
-  <div class="container">
-    <input type="file" id="fileInput" />
-    <input type="password" id="pinInput" placeholder="Ingrese PIN" style="display: block; width: 100%; max-width: 400px; margin: 24px auto; padding: 12px; border: 2px dashed #cbd5e1; border-radius: var(--border-radius); transition: var(--transition); cursor: pointer;" />
-    <button onclick="uploadFile()">Subir Archivo</button>
-    <div id="error" class="error"></div>
-    <div class="file-list" id="fileList"></div>
+  <div id="login-container" class="container">
+    <h1>Acceso a Jota File Manager</h1>
+    <input type="password" id="accessPinInput" placeholder="Ingrese PIN de acceso" style="display: block; width: 100%; max-width: 400px; margin: 24px auto; padding: 12px; border: 2px dashed #cbd5e1; border-radius: var(--border-radius); transition: var(--transition); cursor: pointer;" />
+    <button onclick="validateAccessPin()">Acceder</button>
+    <div id="accessError" class="error"></div>
   </div>
-
+  <div id="main-content" style="display: none;">
+    <header class="header">
+      <h1>Jota File Manager</h1>
+      <p>Copyright - jota 2025</p>
+    </header>
+    <div class="container">
+      <input type="file" id="fileInput" />
+      <input type="password" id="pinInput" placeholder="Ingrese PIN" style="display: block; width: 100%; max-width: 400px; margin: 24px auto; padding: 12px; border: 2px dashed #cbd5e1; border-radius: var(--border-radius); transition: var(--transition); cursor: pointer;" />
+      <button onclick="uploadFile()">Subir Archivo</button>
+      <div id="error" class="error"></div>
+      <div class="file-list" id="fileList"></div>
+    </div>
+  </div>
   <script>
-    const DROPBOX_TOKEN = 'sl.u.AFptTGPRM4fJT8MgeI1_rQngDjPaaLb_fQ4FPO7_KK0X2iQRL_U3YTccqSvuKmQJRyacjDHPWr_rcS53bfd_P_i5wRDHMkXA2P5KSbr4s5a6bOdd0Znvp_1leIpx_SkamHnAjPN7HMSmKiSH1SW_BtVtdpOs3Cvqr34Ci1dMGI0QgvVdRZsbGMGINu_52i_k-qqLJsMD2NDJ8_oXwjSdstp0Hha6IkvMst01aGHNNnSaR-i_OlgP7DEprwUqZzFfQh_Ur9-tQYwjYgqaX31bVojslcc1uKHT3aVNyDtgHPFQ0I49O7LCm_u_Qc2SdlLE28ryvSNXKLFt6Kl4mTnSxfL-fGIXDcElNoDmrhnwhuxbB2L2S8uJKeNBWl7QDySwTKTbvik1VbNZ9fb1f6oT3kcZXynDK1xdP8gpIjDxh0AU1kosDY4ZZf9L7fec_c1WzwpW7bSn3YmMmAtlPZBs35apUIUH08zXxOftaPbGDwBNBM97bBApR0uFvD5U28NSCxhCbkf0Na-_GFHY1F3-Gnz-_0zNxsgrRu7R2EMgZrnJxP9vppw7j9ybE5pbrMU6BA1tYVVLADZwX4zRapBm-YlBM5QRftm-VSECmR4RrLNSk1ZfzuX23mmvtrGBZwAFaYCA-1fP4LPpDcV4dkbMk_yYXjjqXZjr1q6WRMAatsK9w0jUkrtUppCC3R5Y2_sEu3mWr9xdnHclJNeQ1vgH6DEXM5me4cNoN71moo3Ai1z56bHDxOZqrCUDMOPduBKLNvzEXlH_L8lMTS1iWcyw2qyiKCLFQ1ura8GQS9XUDHpBo577GHfdsekkjBMAcW2dWLtJCtbFOdKgK3LOREEKc46LLKaa9QgKcLdZiqpWYcA0tYS07tsAUD5gmL7EDtcbTwkEpao8jdXO4agFwDPuSud-m_aaimszphBTHh_wCSy1EPFvaaUTEZKvaz0_B-BpTdCCcwfUg69iJ9ylMNMc0OGJdtsMDLfygRv-fHZYqKXpESeiRs0Ms2HCIloKk89Ch09Rlp-JLxpzR7ze2Cqu40yFsS43RCSkxOdqDZTKkZPaN60o08EvrlfyqlhRCFa_pGEuogHU0aMHoinv_wdfyrtLwviZIP9XeLWFgl2ko1EMTHuNkQrvyeA6LZEe5IiSRC6m666gqkscInX5jenYi-tXInLnlOIyvH810eloF79Z4KMphqibrxucYLXHoempYdsPpKbKxVnBtzZtfKa1_SS5BMZNTiCpasLdwoZ7GGmxi2iTtVGAFadBwVcFcvKB-PxOYOjacIBfqEz1cF0WWc7LSlffTaRwoIDSIOXpJXOXoF6LnduWSJim1_LLb0jzMsTd07lXUP5Z8ENuBIXjV5oxepN-SvmrUUaOkU1WQLjzBonxQEBbNkfFmYBNpts2xRwcr1k7QGB0T9q2dKId90BR'; // <-- reemplaza por tu token
+    const ACCESS_PIN = "123456"; // PIN de acceso a la página
+
+    function validateAccessPin() {
+      const accessPinInput = document.getElementById('accessPinInput');
+      const enteredAccessPin = accessPinInput.value;
+
+      if (enteredAccessPin !== ACCESS_PIN) {
+        document.getElementById('accessError').innerText = "PIN de acceso incorrecto";
+        return;
+      }
+
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
+<script>
+const DROPBOX_TOKEN = 'sl.u.AFptTGPRM4fJT8MgeI1_rQngDjPaaLb_fQ4FPO7_KK0X2iQRL_U3YTccqSvuKmQJRyacjDHPWr_rcS53bfd_P_i5wRDHMkXA2P5KSbr4s5a6bOdd0Znvp_1leIpx_SkamHnAjPN7HMSmKiSH1SW_BtVtdpOs3Cvqr34Ci1dMGI0QgvVdRZsbGMGINu_52i_k-qqLJsMD2NDJ8_oXwjSdstp0Hha6IkvMst01aGHNNnSaR-i_OlgP7DEprwUqZzFfQh_Ur9-tQYwjYgqaX31bVojslcc1uKHT3aVNyDtgHPFQ0I49O7LCm_u_Qc2SdlLE28ryvSNXKLFt6Kl4mTnSxfL-fGIXDcElNoDmrhnwhuxbB2L2S8uJKeNBWl7QDySwTKTbvik1VbNZ9fb1f6oT3kcZXynDK1xdP8gpIjDxh0AU1kosDY4ZZf9L7fec_c1WzwpW7bSn3YmMmAtlPZBs35apUIUH08zXxOftaPbGDwBNBM97bBApR0uFvD5U28NSCxhCbkf0Na-_GFHY1F3-Gnz-_0zNxsgrRu7R2EMgZrnJxP9vppw7j9ybE5pbrMU6BA1tYVVLADZwX4zRapBm-YlBM5QRftm-VSECmR4RrLNSk1ZfzuX23mmvtrGBZwAFaYCA-1fP4LPpDcV4dkbMk_yYXjjqXZjr1q6WRMAatsK9w0jUkrtUppCC3R5Y2_sEu3mWr9xdnHclJNeQ1vgH6DEXM5me4cNoN71moo3Ai1z56bHDxOZqrCUDMOPduBKLNvzEXlH_L8lMTS1iWcyw2qyiKCLFQ1ura8GQS9XUDHpBo577GHfdsekkjBMAcW2dWLtJCtbFOdKgK3LOREEKc46LLKaa9QgKcLdZiqpWYcA0tYS07tsAUD5gmL7EDtcbTwkEpao8jdXO4agFwDPuSud-m_aaimszphBTHh_wCSy1EPFvaaUTEZKvaz0_B-BpTdCCcwfUg69iJ9ylMNMc0OGJdtsMDLfygRv-fHZYqKXpESeiRs0Ms2HCIloKk89Ch09Rlp-JLxpzR7ze2Cqu40yFsS43RCSkxOdqDZTKkZPaN60o08EvrlfyqlhRCFa_pGEuogHU0aMHoinv_wdfyrtLwviZIP9XeLWFgl2ko1EMTHuNkQrvyeA6LZEe5IiSRC6m666gqkscInX5jenYi-tXInLnlOIyvH810eloF79Z4KMphqibrxucYLXHoempYdsPpKbKxVnBtzZtfKa1_SS5BMZNTiCpasLdwoZ7GGmxi2iTtVGAFadBwVcFcvKB-PxOYOjacIBfqEz1cF0WWc7LSlffTaRwoIDSIOXpJXOXoF6LnduWSJim1_LLb0jzMsTd07lXUP5Z8ENuBIXjV5oxepN-SvmrUUaOkU1WQLjzBonxQEBbNkfFmYBNpts2xRwcr1k7QGB0T9q2dKId90BR'; // <-- reemplaza por tu token
 
     const PIN = "161205"; // PIN predefinido
 
